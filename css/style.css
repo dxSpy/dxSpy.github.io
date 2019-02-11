@@ -13,10 +13,11 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
-main {
-  padding: 20px 20px 120px 20px;
-  text-align: center;
-}
+ .passe {
+    padding: 5px; /* Ширина  */
+    background: #f0f0f0; /* Цвет фона  */
+    border: 2px solid #666; /* Параметры рамки */ 
+ }
 
 p {
   margin: 20px 0;
