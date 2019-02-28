@@ -16,7 +16,7 @@ body {
  .passe {
     padding: 5px; /* Ширина  */
     background: #f0f0f0; /* Цвет фона  */
-    border: 2px solid #666; /* Параметры рамки */ 
+    border: 1px solid #666; /* Параметры рамки */ 
  }
 
 p {
