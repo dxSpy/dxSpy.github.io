@@ -12,4 +12,4 @@ var params = window
         {}
     );
 
-console.log( params['data']);
+alert(params['data']);
