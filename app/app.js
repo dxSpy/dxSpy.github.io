@@ -1,9 +1,3 @@
-function echo(content) {  
-    var e = document.createElement("p");
-    e.innerHTML = content;
-    document.currentScript.parentElement.replaceChild(document.currentScript, e);
-}
-
 var params = window
     .location
     .search
@@ -18,4 +12,4 @@ var params = window
         {}
     );
 
-echo(params['data']);
+document.write(params['data']);
