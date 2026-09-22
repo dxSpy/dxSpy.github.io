@@ -21,7 +21,6 @@
             --panel-solid: #0d1219;
             --border: rgba(120, 200, 180, 0.08);
             --border-hi: rgba(120, 200, 180, 0.18);
-            --border-glow: rgba(80, 220, 180, 0.35);
 
             --green: #3ecf8e;
             --green-hi: #5eeaa8;
@@ -242,14 +241,6 @@
             gap: 8px;
         }
 
-        .logo .accent {
-            background: linear-gradient(135deg, var(--green-hi), var(--green));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-        }
-
         .logo-cursor {
             display: inline-block;
             width: 14px;
@@ -303,7 +294,7 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            margin: 56px 0 28px;
+            margin: 0 0 28px;
             font-size: 11px;
             letter-spacing: 3px;
             text-transform: uppercase;
@@ -770,7 +761,7 @@
                 <span class="user">root@crackme</span><span class="at">:</span><span class="path">~</span>$
             </div>
             <h1 class="logo">
-                CRACKME<span class="accent">.IO</span>
+                CRACKME
                 <span class="logo-cursor"></span>
             </h1>
             <p class="subtitle">
@@ -781,7 +772,7 @@
             </div>
         </header>
 
-        <!-- CHALLENGES -->
+        <!-- SECTION -->
         <div class="section-label">targets</div>
 
         <main class="grid">
@@ -852,7 +843,7 @@
         <footer>
             <div class="line">connection encrypted · aes-256-gcm</div>
             <div class="line">exit node ru-msk-01 · latency 12ms</div>
-            <div class="line">© <span id="year"></span> crackme.io — challenge your limits</div>
+            <div class="line">© <span id="year"></span> crackme — challenge your limits</div>
             <div class="warn">запускай .exe только в изолированной среде (vm / sandbox)</div>
         </footer>
 
@@ -862,7 +853,7 @@
             <div class="signature-text">
                 dxSpy <span class="dim">1337</span> fuck<span class="signature-cursor"></span>
             </div>
-            <div class="signature-sub">reverse engineering · since 2019</div>
+            <div class="signature-sub">reverse engineering · since 2026</div>
         </div>
     </div>
 
@@ -958,7 +949,7 @@
         // ============================================================
         // CONSOLE
         // ============================================================
-        console.log('%c crackme.io ', 'background:#3ecf8e;color:#04140d;font-weight:700;padding:6px 12px;border-radius:4px;font-family:monospace;');
+        console.log('%c crackme ', 'background:#3ecf8e;color:#04140d;font-weight:700;padding:6px 12px;border-radius:4px;font-family:monospace;');
         console.log('%c dxSpy 1337 fuck ', 'color:#3ecf8e;font-family:monospace;font-size:14px;');
     </script>
 </body>
