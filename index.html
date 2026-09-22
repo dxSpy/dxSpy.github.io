@@ -15,10 +15,7 @@
 
         :root {
             --bg-0: #05070a;
-            --bg-1: #080b10;
-            --bg-2: #0c1017;
             --panel: rgba(15, 20, 28, 0.72);
-            --panel-solid: #0d1219;
             --border: rgba(120, 200, 180, 0.08);
             --border-hi: rgba(120, 200, 180, 0.18);
 
@@ -54,7 +51,7 @@
             position: relative;
         }
 
-        /* ===== ANIMATED BACKGROUND ===== */
+        /* ===== BACKGROUND ===== */
         .bg-layer {
             position: fixed;
             inset: 0;
@@ -70,21 +67,18 @@
             opacity: 0.35;
             will-change: transform;
         }
-
         .bg-blob.b1 {
             width: 500px; height: 500px;
             background: radial-gradient(circle, rgba(62, 207, 142, 0.25), transparent 70%);
             top: -100px; left: -100px;
             animation: blob1 22s ease-in-out infinite;
         }
-
         .bg-blob.b2 {
             width: 600px; height: 600px;
             background: radial-gradient(circle, rgba(80, 140, 220, 0.15), transparent 70%);
             bottom: -200px; right: -150px;
             animation: blob2 28s ease-in-out infinite;
         }
-
         .bg-blob.b3 {
             width: 400px; height: 400px;
             background: radial-gradient(circle, rgba(180, 100, 220, 0.1), transparent 70%);
@@ -135,6 +129,47 @@
                 transparent 1px,
                 transparent 3px
             );
+        }
+
+        /* ===== TOASTS ===== */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+            max-width: 340px;
+        }
+
+        .toast {
+            padding: 10px 14px;
+            background: rgba(10, 15, 20, 0.95);
+            border: 1px solid var(--border-hi);
+            border-left: 2px solid var(--green);
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            color: var(--text);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.9), 0 0 20px -8px rgba(62, 207, 142, 0.3);
+            transform: translateX(120%);
+            animation: toastIn 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.2) forwards;
+            letter-spacing: 0.3px;
+        }
+
+        .toast.out { animation: toastOut 0.3s ease forwards; }
+
+        .toast .prefix { color: var(--green); font-weight: 600; }
+
+        @keyframes toastIn {
+            to { transform: translateX(0); }
+        }
+        @keyframes toastOut {
+            to { transform: translateX(120%); opacity: 0; }
         }
 
         /* ===== CONTAINER ===== */
@@ -203,13 +238,35 @@
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .topbar-right span { color: var(--text-mid); }
 
+        .live-users {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--green);
+            font-size: 10.5px;
+            letter-spacing: 1px;
+            padding: 3px 8px;
+            border: 1px solid rgba(62, 207, 142, 0.2);
+            border-radius: 5px;
+            background: rgba(62, 207, 142, 0.05);
+        }
+
+        .live-users .pulse {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 6px var(--green);
+            animation: pulseDot 1.5s ease-in-out infinite;
+        }
+
         /* ===== HEADER ===== */
         .header {
-            margin-bottom: 64px;
+            margin-bottom: 56px;
             animation: fadeUp 0.8s cubic-bezier(0.2, 0.9, 0.3, 1) 0.1s both;
         }
 
@@ -266,20 +323,21 @@
             line-height: 1.55;
         }
 
-        .typing-line {
+        .welcome {
+            font-family: var(--font-mono);
             font-size: 13px;
             color: var(--green);
-            font-family: var(--font-mono);
             padding: 10px 14px;
             background: rgba(62, 207, 142, 0.04);
             border: 1px solid rgba(62, 207, 142, 0.12);
             border-radius: 6px;
-            display: inline-block;
-            min-width: 340px;
+            display: block;
+            min-height: 40px;
+            letter-spacing: 0.3px;
         }
 
-        .typing-line .prompt { color: var(--muted); margin-right: 6px; }
-        .typing-line .cursor {
+        .welcome .prompt { color: var(--muted); margin-right: 6px; }
+        .welcome .cursor {
             display: inline-block;
             width: 7px; height: 13px;
             background: var(--green);
@@ -334,16 +392,33 @@
             box-shadow:
                 0 1px 0 rgba(255, 255, 255, 0.02) inset,
                 0 20px 60px -30px rgba(0, 0, 0, 0.8);
-            animation: cardIn 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) both;
         }
 
-        .card:nth-of-type(1) { animation-delay: 0.2s; }
-        .card:nth-of-type(2) { animation-delay: 0.3s; }
-
-        @keyframes cardIn {
-            from { opacity: 0; transform: translateY(24px); }
-            to   { opacity: 1; transform: translateY(0); }
+        .card.reveal {
+            opacity: 0;
+            transform: translateY(30px);
         }
+
+        .card.reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+
+        .card::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            height: 1px;
+            width: 0;
+            background: linear-gradient(90deg, transparent, var(--green), transparent);
+            box-shadow: 0 0 12px var(--green);
+            transition: width 1.2s cubic-bezier(0.2, 0.9, 0.3, 1) 0.15s;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .card.visible::after { width: 100%; }
 
         .card::before {
             content: "";
@@ -370,32 +445,6 @@
                 0 1px 0 rgba(255, 255, 255, 0.04) inset,
                 0 30px 80px -30px rgba(0, 0, 0, 0.9),
                 0 0 40px -10px rgba(62, 207, 142, 0.15);
-        }
-
-        .card.solved {
-            border-color: rgba(62, 207, 142, 0.3);
-            box-shadow:
-                0 1px 0 rgba(255, 255, 255, 0.04) inset,
-                0 20px 60px -30px rgba(0, 0, 0, 0.8),
-                0 0 40px -15px rgba(62, 207, 142, 0.35);
-        }
-
-        .card.solved::after {
-            content: "✓";
-            position: absolute;
-            top: 14px;
-            right: 16px;
-            width: 22px;
-            height: 22px;
-            display: grid;
-            place-items: center;
-            border-radius: 50%;
-            background: rgba(62, 207, 142, 0.15);
-            color: var(--green);
-            font-size: 12px;
-            font-weight: 700;
-            border: 1px solid rgba(62, 207, 142, 0.3);
-            z-index: 2;
         }
 
         .card-header {
@@ -463,8 +512,7 @@
             content: "";
             position: absolute;
             inset: 0;
-            background:
-                radial-gradient(circle at 50% 50%, rgba(62, 207, 142, 0.05), transparent 60%);
+            background: radial-gradient(circle at 50% 50%, rgba(62, 207, 142, 0.05), transparent 60%);
             pointer-events: none;
         }
 
@@ -581,22 +629,44 @@
                 0 12px 32px -8px rgba(62, 207, 142, 0.7);
         }
 
+        .btn-scan {
+            color: var(--green);
+            border-color: var(--green-dim);
+            background: rgba(62, 207, 142, 0.05);
+        }
+
+        .btn-scan:hover {
+            background: rgba(62, 207, 142, 0.12);
+            color: var(--green-hi);
+            border-color: var(--green);
+        }
+
+        .btn-scan.scanning {
+            color: var(--amber);
+            border-color: var(--amber);
+            pointer-events: none;
+        }
+
+        .btn-scan .spinner {
+            width: 10px; height: 10px;
+            border: 1.5px solid rgba(62, 207, 142, 0.3);
+            border-top-color: var(--green);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: none;
+        }
+
+        .btn-scan.scanning .spinner { display: block; border-top-color: var(--amber); }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         .btn-row {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
             margin-top: 10px;
-        }
-
-        .btn-solved {
-            font-size: 11px;
-            padding: 8px 12px;
-        }
-
-        .btn-solved.active {
-            color: var(--green-hi);
-            border-color: var(--green-dim);
-            background: rgba(62, 207, 142, 0.08);
         }
 
         /* ===== FOOTER ===== */
@@ -608,7 +678,6 @@
             color: var(--muted);
             letter-spacing: 0.3px;
             line-height: 1.9;
-            animation: fadeUp 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) 0.5s both;
         }
 
         footer .line::before {
@@ -724,13 +793,13 @@
             .card-body { padding: 20px; }
             .btn-row { flex-direction: column; }
             .btn-row .btn { width: 100%; justify-content: center; }
-            .typing-line { min-width: auto; width: 100%; }
+            .welcome { min-width: auto; width: 100%; }
             .signature { padding: 24px 16px; }
+            #toast-container { left: 12px; right: 12px; max-width: none; }
         }
     </style>
 </head>
 <body>
-    <!-- BACKGROUND -->
     <div class="bg-layer">
         <div class="bg-blob b1"></div>
         <div class="bg-blob b2"></div>
@@ -740,8 +809,9 @@
         <div class="bg-scan"></div>
     </div>
 
+    <div id="toast-container"></div>
+
     <div class="container">
-        <!-- TOPBAR -->
         <div class="topbar">
             <div class="topbar-left">
                 <span class="status-dot"></span>
@@ -750,12 +820,15 @@
                 <span>node ru-msk-01</span>
             </div>
             <div class="topbar-right">
+                <div class="live-users">
+                    <span class="pulse"></span>
+                    <span id="live-users">7</span> online
+                </div>
                 <div>uptime <span id="uptime">00:00:00</span></div>
                 <div>local <span id="clock">--:--:--</span></div>
             </div>
         </div>
 
-        <!-- HEADER -->
         <header class="header">
             <div class="prompt-line">
                 <span class="user">root@crackme</span><span class="at">:</span><span class="path">~</span>$
@@ -765,19 +838,18 @@
                 <span class="logo-cursor"></span>
             </h1>
             <p class="subtitle">
-                Коллекция задач по реверс-инжинирингу. Изучай, анализируй, взламывай.
+                Коллекция задач по реверс-инжинирингу. Скачивай, изучай, анализируй.
             </p>
-            <div class="typing-line">
-                <span class="prompt">$</span><span id="typewriter"></span><span class="cursor"></span>
+            <div class="welcome">
+                <span class="prompt">$</span><span id="welcome-text"></span><span class="cursor"></span>
             </div>
         </header>
 
-        <!-- SECTION -->
         <div class="section-label">targets</div>
 
         <main class="grid">
             <!-- CARD #1 -->
-            <article class="card" data-target="1">
+            <article class="card reveal" data-target="1">
                 <div class="card-header">
                     <span class="card-id">challenge 01</span>
                     <span>pe32 · windows</span>
@@ -802,13 +874,16 @@
                     <div class="btn-row">
                         <a href="https://github.com/dxSpy/CrackMe-Fox/" target="_blank" class="btn">source</a>
                         <a href="https://www.virustotal.com/ru/file/7446e765dc7bc95d77763bca55da02a9ea3b5c5db1f7f5ed6475e4576caefd3c/analysis/" target="_blank" class="btn">virustotal</a>
-                        <button class="btn btn-solved" data-solved="1">[ ] solved</button>
+                        <button class="btn btn-scan" data-scan="1">
+                            <span class="spinner"></span>
+                            <span class="scan-label">▶ scan</span>
+                        </button>
                     </div>
                 </div>
             </article>
 
             <!-- CARD #2 -->
-            <article class="card" data-target="2">
+            <article class="card reveal" data-target="2">
                 <div class="card-header">
                     <span class="card-id">challenge 02</span>
                     <span>pe32+ · windows</span>
@@ -833,13 +908,15 @@
                     <div class="btn-row">
                         <a href="https://github.com/dxSpy/the_crackme" target="_blank" class="btn">source</a>
                         <a href="https://www.virustotal.com/gui/file-analysis/NGJmMDE2MGVkZGQzZTE2ZWQ2OTcyZDdkZjEyODU1OGQ6MTU2MzYzNTY2NQ==/detection" target="_blank" class="btn">virustotal</a>
-                        <button class="btn btn-solved" data-solved="2">[ ] solved</button>
+                        <button class="btn btn-scan" data-scan="2">
+                            <span class="spinner"></span>
+                            <span class="scan-label">▶ scan</span>
+                        </button>
                     </div>
                 </div>
             </article>
         </main>
 
-        <!-- FOOTER -->
         <footer>
             <div class="line">connection encrypted · aes-256-gcm</div>
             <div class="line">exit node ru-msk-01 · latency 12ms</div>
@@ -847,7 +924,6 @@
             <div class="warn">запускай .exe только в изолированной среде (vm / sandbox)</div>
         </footer>
 
-        <!-- SIGNATURE -->
         <div class="signature">
             <div class="signature-label">crafted by</div>
             <div class="signature-text">
@@ -881,57 +957,137 @@
         document.getElementById('year').textContent = new Date().getFullYear();
 
         // ============================================================
-        // TYPEWRITER
+        // WELCOME TYPEWRITER
         // ============================================================
-        const phrases = [
-            'nmap -sS -A target.local',
-            'objdump -d ./CrackMe.exe',
-            'strings ./CrackMe.exe | grep -i pass',
-            'gdb -q ./the_crackme',
-            'x64dbg ./the_crackme.exe',
-            'python3 solve.py --verbose'
+        const welcomeEl = document.getElementById('welcome-text');
+        const welcomePhrases = [
+            'connecting to secure channel...',
+            'handshake complete. aes-256 enabled.',
+            'you are being watched. stay sharp.',
+            'reverse engineering is an art.',
+            'operator authenticated. welcome back.',
+            'all downloads available. take what you need.'
         ];
-        const typeEl = document.getElementById('typewriter');
-        let pi = 0, ci = 0, del = false;
+        let wi = 0, wci = 0, wdel = false;
 
-        function typeLoop() {
-            const cur = phrases[pi];
-            if (!del) {
-                typeEl.textContent = cur.substring(0, ci + 1);
-                ci++;
-                if (ci === cur.length) { del = true; setTimeout(typeLoop, 2400); return; }
+        function welcomeType() {
+            const cur = welcomePhrases[wi];
+            if (!wdel) {
+                welcomeEl.textContent = cur.substring(0, wci + 1);
+                wci++;
+                if (wci === cur.length) { wdel = true; setTimeout(welcomeType, 2600); return; }
             } else {
-                typeEl.textContent = cur.substring(0, ci - 1);
-                ci--;
-                if (ci === 0) { del = false; pi = (pi + 1) % phrases.length; }
+                welcomeEl.textContent = cur.substring(0, wci - 1);
+                wci--;
+                if (wci === 0) { wdel = false; wi = (wi + 1) % welcomePhrases.length; }
             }
-            setTimeout(typeLoop, del ? 22 : 55);
+            setTimeout(welcomeType, wdel ? 20 : 55);
         }
-        typeLoop();
+        welcomeType();
 
         // ============================================================
-        // SOLVED
+        // LIVE USERS
         // ============================================================
-        function updateSolved(id, solved) {
-            const card = document.querySelector(`.card[data-target="${id}"]`);
-            const btn = document.querySelector(`button[data-solved="${id}"]`);
-            if (!card || !btn) return;
-            card.classList.toggle('solved', solved);
-            btn.classList.toggle('active', solved);
-            btn.textContent = solved ? '[✓] solved' : '[ ] solved';
+        const liveEl = document.getElementById('live-users');
+        function updateLive() {
+            const n = 5 + Math.floor(Math.random() * 9);
+            liveEl.textContent = n;
         }
+        setInterval(updateLive, 4000);
+        updateLive();
 
-        document.querySelectorAll('button[data-solved]').forEach(btn => {
-            const id = btn.dataset.solved;
-            const saved = localStorage.getItem('solved_' + id) === '1';
-            updateSolved(id, saved);
+        // ============================================================
+        // SCAN КНОПКИ
+        // ============================================================
+        const scanSteps = [
+            'analyzing headers...',
+            'extracting strings...',
+            'checking packer...',
+            'computing entropy...',
+            'hashing sections...',
+            'comparing signatures...',
+            'no threats detected.'
+        ];
 
+        document.querySelectorAll('.btn-scan').forEach(btn => {
             btn.addEventListener('click', () => {
-                const now = !btn.classList.contains('active');
-                localStorage.setItem('solved_' + id, now ? '1' : '0');
-                updateSolved(id, now);
+                if (btn.classList.contains('scanning')) return;
+                btn.classList.add('scanning');
+                btn.querySelector('.scan-label').textContent = 'scanning';
+                let step = 0;
+                const iv = setInterval(() => {
+                    if (step < scanSteps.length) {
+                        toast(scanSteps[step], 'info');
+                        step++;
+                    } else {
+                        clearInterval(iv);
+                        btn.classList.remove('scanning');
+                        btn.querySelector('.scan-label').textContent = '✓ clean';
+                        setTimeout(() => {
+                            btn.querySelector('.scan-label').textContent = '▶ scan';
+                        }, 3000);
+                    }
+                }, 500);
             });
         });
+
+        // ============================================================
+        // TOASTS
+        // ============================================================
+        const toastContainer = document.getElementById('toast-container');
+        function toast(text, type = 'info') {
+            const el = document.createElement('div');
+            el.className = 'toast';
+            el.innerHTML = `<span class="prefix">›</span> ${text}`;
+            if (type === 'green') el.style.borderLeftColor = 'var(--green)';
+            if (type === 'info') el.style.borderLeftColor = 'var(--green-dim)';
+            toastContainer.appendChild(el);
+
+            setTimeout(() => {
+                el.classList.add('out');
+                setTimeout(() => el.remove(), 300);
+            }, 3500);
+
+            while (toastContainer.children.length > 3) {
+                toastContainer.removeChild(toastContainer.firstChild);
+            }
+        }
+
+        setTimeout(() => toast('secure channel established.', 'green'), 1200);
+        setTimeout(() => toast('targets available for download.', 'info'), 2600);
+
+        const ambientPhrases = [
+            'scanning node ru-msk-01...',
+            'firewall rules updated.',
+            'unknown packet dropped.',
+            'cipher rotation complete.',
+            'new operator joined.',
+            'hash check passed.',
+            'port 22 opened.',
+            'session encrypted.',
+            'logs rotated.',
+            'anomaly detected — investigating.'
+        ];
+        setInterval(() => {
+            if (Math.random() > 0.5) {
+                const p = ambientPhrases[Math.floor(Math.random() * ambientPhrases.length)];
+                toast(p, 'info');
+            }
+        }, 11000);
+
+        // ============================================================
+        // SCROLL REVEAL
+        // ============================================================
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.card.reveal').forEach(card => revealObserver.observe(card));
 
         // ============================================================
         // CARD GLOW FOLLOW MOUSE
